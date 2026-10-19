@@ -1,0 +1,21 @@
+{
+  "id": "./",
+  "name": "ألف ABC",
+  "short_name": "ألف ABC",
+  "description": "تعلّم الحروف والقراءة والكتابة والحساب بالعربية والفرنسية والإنجليزية، مع ألعاب ودروس إسلامية.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#EAF3FF",
+  "theme_color": "#2F5BFF",
+  "categories": ["education", "kids"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
