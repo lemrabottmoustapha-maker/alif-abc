@@ -8,7 +8,8 @@ on:
 jobs:
   android:
     name: Android APK
-    runs-on: ubuntu-latest
+    # Pinned: this image already contains the Android SDK, so no separate SDK installer is needed.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Copy the web app into the Android project
@@ -17,7 +18,8 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - uses: android-actions/setup-android@v3
+      - name: Accept Android SDK licenses
+        run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
       - name: Build APK
         working-directory: android
         run: |
