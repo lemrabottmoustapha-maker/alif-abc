@@ -1,0 +1,58 @@
+{
+  "name": "alif-abc",
+  "productName": "Alif ABC",
+  "version": "1.0.0",
+  "description": "ألف ABC: تعليم الحروف والقراءة والكتابة والحساب للأطفال بالعربية والفرنسية والإنجليزية",
+  "main": "main.js",
+  "private": true,
+  "author": "Alif ABC",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --publish never",
+    "dist:win": "electron-builder --win --publish never",
+    "dist:mac": "electron-builder --mac --publish never",
+    "dist:linux": "electron-builder --linux --publish never"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "com.alifabc.app",
+    "productName": "Alif ABC",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "main.js",
+      "icon.png",
+      "www/**/*"
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "mac": {
+      "icon": "build/icon.png",
+      "category": "public.app-category.education",
+      "target": [
+        "dmg"
+      ]
+    },
+    "linux": {
+      "icon": "build/icon.png",
+      "category": "Education",
+      "target": [
+        "AppImage"
+      ]
+    }
+  }
+}

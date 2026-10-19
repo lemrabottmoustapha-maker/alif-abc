@@ -1,0 +1,8 @@
+/* Fonts are bundled so the app works fully offline. All are licensed under the SIL OFL (see OFL-*.txt). */
+@font-face{font-family:"Baloo 2";font-style:normal;font-weight:400 800;font-display:swap;src:url("Baloo2.woff") format("woff")}
+@font-face{font-family:"Baloo Bhaijaan 2";font-style:normal;font-weight:400 800;font-display:swap;src:url("BalooBhaijaan2.woff") format("woff")}
+@font-face{font-family:"Nunito";font-style:normal;font-weight:200 1000;font-display:swap;src:url("Nunito.woff") format("woff")}
+@font-face{font-family:"Cairo";font-style:normal;font-weight:200 1000;font-display:swap;src:url("Cairo.woff") format("woff")}
+@font-face{font-family:"Amiri";font-style:normal;font-weight:400;font-display:swap;src:url("Amiri-Regular.woff") format("woff")}
+@font-face{font-family:"Amiri";font-style:normal;font-weight:700;font-display:swap;src:url("Amiri-Bold.woff") format("woff")}
+@font-face{font-family:"Amiri Quran";font-style:normal;font-weight:400;font-display:swap;src:url("AmiriQuran.woff") format("woff")}
