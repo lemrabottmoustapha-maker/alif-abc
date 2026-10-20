@@ -383,6 +383,7 @@ var actx=null;
 function tone(seq){
   if(!S.sound)return;
   try{actx=actx||new (window.AudioContext||window.webkitAudioContext)();
+    if(actx.state==='suspended'&&actx.resume)actx.resume();
     var now=actx.currentTime;
     seq.forEach(function(n,i){var o=actx.createOscillator(),g=actx.createGain();
       o.type='sine';o.frequency.value=n[0];o.connect(g);g.connect(actx.destination);
@@ -391,8 +392,20 @@ function tone(seq){
 }
 var chime=function(){tone([[660,.18],[880,.18],[1175,.3]])};
 var thud=function(){tone([[220,.2]])};
+var ttsWarned=false;
+var TTS_MISSING={
+  ar:'لا يوجد صوت لهذه اللغة في هاتفك. ثبّت صوتها من إعدادات «تحويل النص إلى كلام».',
+  fr:'Aucune voix pour cette langue sur ton téléphone. Installe-la dans les réglages « Synthèse vocale ».',
+  en:'No voice for this language on your phone. Install it in the “Text-to-speech” settings.'
+};
+window.__ttsMissing=function(){if(ttsWarned)return;ttsWarned=true;toast(TTS_MISSING[S.lang])};
+function stopSpeech(){
+  try{if(window.AndroidTTS)window.AndroidTTS.stop();else if(window.speechSynthesis)window.speechSynthesis.cancel()}catch(_){}
+}
 function speak(text,queue){
-  if(!S.sound||!('speechSynthesis' in window))return;
+  if(!S.sound)return;
+  if(window.AndroidTTS){try{window.AndroidTTS.speak(String(text),LANG[S.lang].code,!!queue)}catch(_){}return}
+  if(!('speechSynthesis' in window))return;
   try{var syn=window.speechSynthesis;if(!queue)syn.cancel();
     var u=new SpeechSynthesisUtterance(text);u.lang=LANG[S.lang].code;u.rate=0.85;u.pitch=1.1;
     var pre=LANG[S.lang].code.slice(0,2),vs=syn.getVoices();
@@ -1010,7 +1023,7 @@ en:{title:'My progress',stars:'stars',days:'day streak',letters:'letters learned
   soundOn:'Sound on',soundOff:'Sound off',reset:'Reset progress',confirm:'Tap again to confirm',install:'Install app',
   about:'Works offline, collects no data and shows no ads. Progress stays on this device.',newBadge:'New badge: ',version:'Version'}
 };
-var APP_VERSION='1.0.0';
+var APP_VERSION='1.0.1';
 var BADGES=[
  {id:'star1',g:'★',n:{ar:'نجمتي الأولى',fr:'Ma première étoile',en:'My first star'},ok:function(){return S.stars>=1}},
  {id:'star25',g:'★',n:{ar:'٢٥ نجمة',fr:'25 étoiles',en:'25 stars'},ok:function(){return S.stars>=25}},
@@ -1094,12 +1107,12 @@ document.addEventListener('click',function(e){
   switch(a){
     case 'panel':openPanel();break;
     case 'pclose':closePanel();break;
-    case 'psound':S.sound=!S.sound;if(!S.sound&&window.speechSynthesis){try{speechSynthesis.cancel()}catch(_){}}save();renderChrome();repaintPanel();break;
+    case 'psound':S.sound=!S.sound;if(!S.sound)stopSpeech();save();renderChrome();repaintPanel();break;
     case 'preset':if(P.confirm){clearTimeout(P.timer);P.confirm=false;resetProgress();repaintPanel()}else{P.confirm=true;repaintPanel();clearTimeout(P.timer);P.timer=setTimeout(function(){P.confirm=false;repaintPanel()},4000)}break;
     case 'pinstall':if(P.install){var ev=P.install;P.install=null;try{ev.prompt()}catch(_){}repaintPanel()}break;
     case 'lang':S.lang=v;R.q=null;M.q=null;G.q=null;G.sc=null;W.idx=0;S.detail=null;$('#overlay').hidden=true;save();renderAll();break;
     case 'tab':S.tab=v;renderChrome();renderView();window.scrollTo(0,0);break;
-    case 'sound':S.sound=!S.sound;if(!S.sound&&window.speechSynthesis){try{speechSynthesis.cancel()}catch(_){}}save();renderChrome();break;
+    case 'sound':S.sound=!S.sound;if(!S.sound)stopSpeech();save();renderChrome();break;
     case 'open':openDetail(parseInt(b.dataset.i,10));break;
     case 'close':closeDetail();break;
     case 'dprev':case 'dnext':openDetail(S.detail+(a==='dnext'?1:-1));break;
