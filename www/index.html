@@ -554,10 +554,26 @@ function mountPad(){
   var cur=$('#strip button[aria-pressed="true"]');if(cur&&cur.scrollIntoView){try{cur.scrollIntoView({block:'nearest',inline:'center'})}catch(_){}}
 }
 function clearInk(){var c=$('#ink');if(!c)return;var ctx=c.getContext('2d');ctx.save();ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,c.width,c.height);ctx.restore();PAD.len=0}
+/* how well the child's tracing matches the letter: min(share of the letter covered, share of the ink lying on the letter) */
+var MATCH_MIN=0.6;
+function dil(a,n,r){var o=new Uint8Array(n*n),tmp=new Uint8Array(n*n),x,y,k;
+  for(y=0;y<n;y++)for(x=0;x<n;x++){if(a[y*n+x]){var x0=Math.max(0,x-r),x1=Math.min(n-1,x+r);for(k=x0;k<=x1;k++)tmp[y*n+k]=1}}
+  for(y=0;y<n;y++)for(x=0;x<n;x++){if(tmp[y*n+x]){var y0=Math.max(0,y-r),y1=Math.min(n-1,y+r);for(k=y0;k<=y1;k++)o[k*n+x]=1}}
+  return o}
+function matchScore(){
+  var g=$('#ghost'),ink=$('#ink');if(!g||!ink)return 0;
+  var N=64,c=document.createElement('canvas');c.width=c.height=N;var cx=c.getContext('2d');
+  function mask(src,th){cx.clearRect(0,0,N,N);cx.drawImage(src,0,0,N,N);var d=cx.getImageData(0,0,N,N).data,m=new Uint8Array(N*N);for(var i=0;i<N*N;i++)m[i]=d[i*4+3]>th?1:0;return m}
+  var G=mask(g,30),I=mask(ink,30),r=4,Gd=dil(G,N,r),Id=dil(I,N,r),gs=0,gc=0,is=0,ic=0,i;
+  for(i=0;i<N*N;i++){if(G[i]){gs++;if(Id[i])gc++}if(I[i]){is++;if(Gd[i])ic++}}
+  if(!gs||!is)return 0;
+  return Math.min(gc/gs,ic/is)}
 function writeDone(){
-  if(PAD.len<PAD.size*1.0){toast(t().traceFirst);return}
+  if(PAD.len<PAD.size*0.3){toast(t().traceFirst);return}
+  var sc=Math.round(matchScore()*100);
+  if(sc<MATCH_MIN*100){thud();toast(t().retry+' ('+sc+'%)');return}
   var k=wKey(),w=S.written[k];if(w.indexOf(W.idx)<0)w.push(W.idx);
-  addStar(1);chime();toast(pick(t().good));
+  addStar(1);chime();toast(pick(t().good)+' '+sc+'%');
   var n=wChars().length;W.idx=(W.idx+1)%n;save();
   setTimeout(function(){if(S.tab==='write')renderView()},650);
 }
@@ -1023,7 +1039,7 @@ en:{title:'My progress',stars:'stars',days:'day streak',letters:'letters learned
   soundOn:'Sound on',soundOff:'Sound off',reset:'Reset progress',confirm:'Tap again to confirm',install:'Install app',
   about:'Works offline, collects no data and shows no ads. Progress stays on this device.',newBadge:'New badge: ',version:'Version'}
 };
-var APP_VERSION='1.0.1';
+var APP_VERSION='1.0.2';
 var BADGES=[
  {id:'star1',g:'★',n:{ar:'نجمتي الأولى',fr:'Ma première étoile',en:'My first star'},ok:function(){return S.stars>=1}},
  {id:'star25',g:'★',n:{ar:'٢٥ نجمة',fr:'25 étoiles',en:'25 stars'},ok:function(){return S.stars>=25}},
