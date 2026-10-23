@@ -34,6 +34,7 @@ public class MainActivity extends Activity {
     private boolean ttsReady = false;
     private String pendingText = null;
     private String pendingLang = null;
+    private float pendingRate = 0.85f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +44,9 @@ public class MainActivity extends Activity {
             synchronized (MainActivity.this) {
                 ttsReady = (status == TextToSpeech.SUCCESS) && tts != null;
                 if (ttsReady) {
-                    tts.setSpeechRate(0.85f);
-                    tts.setPitch(1.1f);
+                    tts.setPitch(1.0f);
                     if (pendingText != null) {
-                        doSpeak(pendingText, pendingLang, false);
+                        doSpeak(pendingText, pendingLang, false, pendingRate);
                     }
                 }
                 pendingText = null;
@@ -110,17 +110,29 @@ public class MainActivity extends Activity {
     /** Called from the page as window.AndroidTTS.speak(text, "ar-SA", queue). */
     private class SpeechBridge {
         @JavascriptInterface
-        public void speak(String text, String langTag, boolean queue) {
+        public void speak(String text, String langTag, boolean queue, float rate) {
             synchronized (MainActivity.this) {
                 if (tts == null) return;
                 if (!ttsReady) {
                     // The engine is still starting: remember the last request and say it once ready.
                     pendingText = text;
                     pendingLang = langTag;
+                    pendingRate = rate;
                     return;
                 }
-                doSpeak(text, langTag, queue);
+                doSpeak(text, langTag, queue, rate);
             }
+        }
+
+        @JavascriptInterface
+        public void openSettings() {
+            runOnUiThread(() -> {
+                try {
+                    startActivity(new Intent("com.android.settings.TTS_SETTINGS"));
+                } catch (Exception e) {
+                    try { startActivity(new Intent(android.provider.Settings.ACTION_SETTINGS)); } catch (Exception ignored) { }
+                }
+            });
         }
 
         @JavascriptInterface
@@ -131,15 +143,40 @@ public class MainActivity extends Activity {
         }
     }
 
-    /** Must be called while holding the lock on MainActivity.this. */
-    private void doSpeak(String text, String langTag, boolean queue) {
-        Locale wanted = Locale.forLanguageTag(langTag);
-        int result = tts.setLanguage(wanted);
-        if (result < TextToSpeech.LANG_AVAILABLE) {
-            result = tts.setLanguage(new Locale(wanted.getLanguage()));
+    /** Best installed voice for a language: prefers the exact locale, offline voices that are fully installed, and the highest quality. */
+    private android.speech.tts.Voice bestVoice(Locale wanted) {
+        try {
+            android.speech.tts.Voice best = null;
+            int bestScore = Integer.MIN_VALUE;
+            java.util.Set<android.speech.tts.Voice> all = tts.getVoices();
+            if (all == null) return null;
+            for (android.speech.tts.Voice v : all) {
+                Locale l = v.getLocale();
+                if (l == null || !l.getLanguage().equals(wanted.getLanguage())) continue;
+                if (v.getFeatures() != null && v.getFeatures().contains(TextToSpeech.Engine.KEY_FEATURE_NOT_INSTALLED)) continue;
+                int score = v.getQuality();
+                if (l.getCountry().equals(wanted.getCountry())) score += 50;
+                if (!v.isNetworkConnectionRequired()) score += 100;
+                if (score > bestScore) { bestScore = score; best = v; }
+            }
+            return best;
+        } catch (Exception e) {
+            return null;
         }
+    }
+
+    /** Must be called while holding the lock on MainActivity.this. */
+    private void doSpeak(String text, String langTag, boolean queue, float rate) {
+        Locale wanted = Locale.forLanguageTag(langTag);
+        int result = TextToSpeech.LANG_NOT_SUPPORTED;
+        android.speech.tts.Voice v = bestVoice(wanted);
+        if (v != null) {
+            result = tts.setVoice(v);
+            if (result == TextToSpeech.ERROR) result = TextToSpeech.LANG_NOT_SUPPORTED; else result = TextToSpeech.LANG_AVAILABLE;
+        }
+        if (result < TextToSpeech.LANG_AVAILABLE) result = tts.setLanguage(wanted);
+        if (result < TextToSpeech.LANG_AVAILABLE) result = tts.setLanguage(new Locale(wanted.getLanguage()));
         if (result < TextToSpeech.LANG_AVAILABLE) {
-            // No voice for this language on the phone: tell the page so it can show a hint.
             runOnUiThread(() -> {
                 if (webView != null) {
                     webView.evaluateJavascript("window.__ttsMissing&&window.__ttsMissing()", null);
@@ -147,6 +184,7 @@ public class MainActivity extends Activity {
             });
             return;
         }
+        tts.setSpeechRate(rate);
         tts.speak(text, queue ? TextToSpeech.QUEUE_ADD : TextToSpeech.QUEUE_FLUSH, null,
                 "alif-" + System.nanoTime());
     }
