@@ -139,6 +139,12 @@ h2{font:800 1.35rem/1.2 var(--display);margin:0;text-wrap:balance}
 #app.l-ar .sent{font-family:"Amiri","Cairo",serif;font-weight:700;font-size:2.1rem;line-height:2.1}
 #app.l-ar .textcard .ttl,#app.l-ar .textcard+.card h2{font-family:"Amiri","Cairo",serif;line-height:2}
 
+/* picture of the answer */
+.ansPic{display:flex;align-items:center;justify-content:center;gap:14px;background:var(--good-bg);border:2px solid var(--good);border-radius:20px;padding:10px 16px;width:100%}
+.ansPic .pem{font-size:4.2rem;line-height:1}
+.ansPic .psvg{width:84px;height:68px}
+.ansPic b{font:800 1.5rem/1.3 var(--display);color:var(--good)}
+
 /* quiz */
 .card{background:var(--surface);border:2px solid var(--line);border-radius:24px;padding:16px;display:flex;flex-direction:column;gap:14px;align-items:center;text-align:center}
 .card .em{font-size:6rem;line-height:1.1}
@@ -231,6 +237,11 @@ h2{font:800 1.35rem/1.2 var(--display);margin:0;text-wrap:balance}
 .qline{font:800 1.5rem/1.6 var(--display);margin:0;overflow-wrap:anywhere}
 .fact{background:var(--bg);border-radius:16px;padding:10px 14px;font-weight:700;text-align:start;width:100%;line-height:1.7}
 .mem{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;width:100%;max-width:420px}
+.mem.s32{grid-template-columns:repeat(8,1fr);gap:5px;max-width:100%}
+.mem.s32 .mc{font-size:1.45rem;border-radius:10px}.mem.s32 .mc .back{font-size:1.1rem}
+.scorebar{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;font:800 1.15rem var(--display)}
+.scorebar span{background:var(--bg);border-radius:14px;padding:6px 14px;border:2px solid transparent}
+.scorebar span.act{border-color:var(--brand);color:var(--brand)}
 .mc{aspect-ratio:1;border:0;border-radius:18px;background:var(--brand);color:var(--brand-ink);font-size:2.3rem;line-height:1;display:grid;place-items:center;padding:0;box-shadow:0 4px 0 var(--brand-edge);min-width:0}
 .mc .back{font:800 1.8rem/1 var(--display)}
 .mc.up{background:var(--surface);color:var(--ink);border:2px solid var(--line);box-shadow:none}
@@ -863,15 +874,18 @@ var GT={
 ar:{title:'ألعاب وألغاز',hint:'العب وتعلّم واجمع النجوم',back:'رجوع',
  names:{riddle:['ألغاز','خمّن الجواب'],quiz:['هل تعلم؟','أسئلة مفيدة'],memory:['لعبة الذاكرة','اعثر على الأزواج'],scramble:['رتّب الحروف','كوّن الكلمة'],odd:['من المختلف؟','اختر الغريب'],next:['ما التالي؟','أكمل النمط']},
  askRiddle:'خمّن اللغز',askQuiz:'أجب عن السؤال',askOdd:'أيّ واحد مختلف عن الباقي؟',askNext:'ما الشكل التالي؟',askScramble:'رتّب الحروف لتكوّن اسم الصورة',fact:'هل تعلم؟',
- undo:'تراجع',clear:'مسح',next:'التالي',again:'العب مرة أخرى',moves:'المحاولات',win:'أحسنت! وجدت كل الأزواج'},
+ undo:'تراجع',clear:'مسح',next:'التالي',again:'العب مرة أخرى',moves:'المحاولات',win:'أحسنت! وجدت كل الأزواج',
+ mSolo:'تلعب وحدك',mDuo:'ضد شخص',mBot:'ضد الروبوت',mMode:'طريقة اللعب',mSize:'عدد الخانات',start:'ابدأ',settings:'تغيير الإعدادات',p1:'اللاعب 1',p2:'اللاعب 2',you:'أنت',robot:'الروبوت',turnOf:'الدور: ',winnerIs:'الفائز: ',draw:'تعادل!',youWin:'أحسنت! فزت',botWins:'فاز الروبوت، حاول مرة أخرى'},
 fr:{title:'Jeux et énigmes',hint:'Joue, apprends et gagne des étoiles',back:'Retour',
  names:{riddle:['Devinettes','Trouve la réponse'],quiz:['Le savais-tu ?','Questions utiles'],memory:['Mémoire','Trouve les paires'],scramble:['Lettres mélangées','Forme le mot'],odd:['L’intrus','Trouve l’intrus'],next:['Et après ?','Complète la suite']},
  askRiddle:'Devine l’énigme',askQuiz:'Réponds à la question',askOdd:'Lequel est différent des autres ?',askNext:'Qu’est-ce qui vient ensuite ?',askScramble:'Remets les lettres dans l’ordre pour former le mot',fact:'Le savais-tu ?',
- undo:'Annuler',clear:'Effacer',next:'Suivant',again:'Rejouer',moves:'Essais',win:'Bravo ! Tu as trouvé toutes les paires'},
+ undo:'Annuler',clear:'Effacer',next:'Suivant',again:'Rejouer',moves:'Essais',win:'Bravo ! Tu as trouvé toutes les paires',
+ mSolo:'Seul',mDuo:'Contre un joueur',mBot:'Contre le robot',mMode:'Mode de jeu',mSize:'Nombre de cartes',start:'Commencer',settings:'Changer les réglages',p1:'Joueur 1',p2:'Joueur 2',you:'Toi',robot:'Robot',turnOf:'Au tour de : ',winnerIs:'Gagnant : ',draw:'Égalité !',youWin:'Bravo ! Tu as gagné',botWins:'Le robot a gagné, réessaie'},
 en:{title:'Games & Riddles',hint:'Play, learn and collect stars',back:'Back',
  names:{riddle:['Riddles','Guess the answer'],quiz:['Did you know?','Useful questions'],memory:['Memory','Find the pairs'],scramble:['Word scramble','Build the word'],odd:['Odd one out','Spot the different one'],next:['What comes next?','Finish the pattern']},
  askRiddle:'Guess the riddle',askQuiz:'Answer the question',askOdd:'Which one is different?',askNext:'What comes next?',askScramble:'Put the letters in order to spell the picture',fact:'Did you know?',
- undo:'Undo',clear:'Clear',next:'Next',again:'Play again',moves:'Tries',win:'Great job! You found every pair'}
+ undo:'Undo',clear:'Clear',next:'Next',again:'Play again',moves:'Tries',win:'Great job! You found every pair',
+ mSolo:'Play alone',mDuo:'Against a player',mBot:'Against the robot',mMode:'How to play',mSize:'Number of cards',start:'Start',settings:'Change settings',p1:'Player 1',p2:'Player 2',you:'You',robot:'Robot',turnOf:'Turn: ',winnerIs:'Winner: ',draw:'It’s a tie!',youWin:'Great job! You won',botWins:'The robot won, try again'}
 };
 var gt=function(){return GT[S.lang]};
 var RIDDLES={
@@ -957,6 +971,20 @@ function simplePick(o,k,ans){
   renderView();
 }
 
+/* picture of the right answer, shown after a correct choice (same order in every language) */
+var SVGPIC={
+ comb:'<svg viewBox="0 0 100 60" class="psvg" aria-hidden="true"><rect x="6" y="8" width="88" height="16" rx="6" fill="#F6A04D"/><g fill="#F6A04D">'+[0,1,2,3,4,5,6,7,8,9].map(function(i){return '<rect x="'+(9+i*8.6)+'" y="22" width="5" height="30" rx="2.5"/>'}).join('')+'</g></svg>',
+ table:'<svg viewBox="0 0 100 80" class="psvg" aria-hidden="true"><rect x="8" y="18" width="84" height="12" rx="4" fill="#B9783F"/><rect x="16" y="30" width="9" height="42" rx="3" fill="#8F5A2B"/><rect x="75" y="30" width="9" height="42" rx="3" fill="#8F5A2B"/><rect x="26" y="30" width="48" height="6" fill="#A66B35"/></svg>',
+ lungs:'<svg viewBox="0 0 100 80" class="psvg" aria-hidden="true"><rect x="46" y="4" width="8" height="30" rx="4" fill="#E58AA0"/><path d="M45 30C28 26 10 40 10 62c0 10 10 14 20 12 10-2 15-10 15-20z" fill="#F4A3B5"/><path d="M55 30c17-4 35 10 35 32 0 10-10 14-20 12-10-2-15-10-15-20z" fill="#F4A3B5"/></svg>'
+};
+var PIC={
+ riddle:['🐘','svg:comb','☁️','🕳️','🖊️','svg:table','🌙','⏰'],
+ quiz:['📅','🏙️','🌍','🦷','🌱','svg:lungs','🌈','🕛','🧼','🐋','🛑','🗺️']
+};
+function picHTML(kind,i,label){var v=(PIC[kind]||[])[i];if(!v)return '';
+  var h=v.indexOf('svg:')===0?SVGPIC[v.slice(4)]:'<span class="pem" aria-hidden="true">'+v+'</span>';
+  return '<div class="ansPic">'+h+'<b>'+esc(label)+'</b></div>'}
+
 /* riddles + useful questions */
 function mcPool(kind){return (kind==='riddle'?RIDDLES:QUIZ)[S.lang]}
 function newMC(kind){
@@ -968,35 +996,96 @@ function viewMC(kind){
   var q=G.q,r=mcPool(kind)[q.i],g=gt();
   var opts=q.opts.map(function(o,k){var cls='opt'+(q.done&&o===r[1]?' ok':'')+(q.wrong.indexOf(k)>=0?' no':'');
     return '<button class="'+cls+'" data-act="gmopt" data-k="'+k+'"'+(q.done||q.wrong.indexOf(k)>=0?' disabled':'')+'>'+esc(o)+'</button>'}).join('');
+  var pic=q.done?picHTML(kind,q.i,r[1]):'';
   var fact=(q.done&&kind==='quiz')?'<div class="fact"><b>'+esc(g.fact)+'</b> '+esc(r[4])+'</div>':'';
   return '<div class="card"><h2>'+esc(kind==='riddle'?g.askRiddle:g.askQuiz)+'</h2><p class="qline" lang="'+S.lang+'">'+esc(r[0])+'</p>'+
    '<button class="btn ghost" data-act="gmhear">'+ICON.spk+'<span>'+esc(t().hear)+'</span></button>'+
-   '<div class="opts" role="group" lang="'+S.lang+'">'+opts+'</div>'+fact+fbHTML(q,'gmnext',kind)+'</div>';
+   '<div class="opts" role="group" lang="'+S.lang+'">'+opts+'</div>'+pic+fact+fbHTML(q,'gmnext',kind)+'</div>';
 }
 
-/* memory */
+/* memory: alone, against a person, or against the robot; 12, 16 or 32 cards */
+var MEMCFG={mode:'solo',size:16};
 function newMem(){
-  var es=shuffle(EMO.memory).slice(0,6);
-  G.mem={cards:shuffle(es.concat(es)).map(function(e){return {e:e,up:false,ok:false}}),first:-1,lock:false,moves:0,won:false};
+  var cfg=MEMCFG,es=shuffle(EMO.memory).slice(0,cfg.size/2);
+  G.mem={mode:cfg.mode,size:cfg.size,cards:shuffle(es.concat(es)).map(function(e){return {e:e,up:false,ok:false}}),first:-1,lock:false,moves:0,turn:0,score:[0,0],won:false,known:{},plan:-1,gen:Math.random()};
 }
-function memFlip(i){
-  var m=G.mem;if(!m||m.lock||m.won)return;var c=m.cards[i];if(c.up||c.ok)return;
-  c.up=true;
+function memNames(){var g=gt(),m=G.mem;return m.mode==='bot'?[g.you,g.robot]:[g.p1,g.p2]}
+function memFinish(m){
+  m.won=true;S.stats.mem++;var g=m.size===12?2:(m.size===16?3:5);
+  if(m.mode==='solo')addStar(g);
+  else if(m.mode==='duo')addStar(2);
+  else addStar(m.score[0]>m.score[1]?g:1);
+  save();checkBadges();
+}
+function memSee(m,i){if(m.mode==='bot'&&Math.random()<0.75)m.known[i]=true}
+function memTurnEnd(m,matched){
+  if(!matched&&m.mode!=='solo')m.turn=1-m.turn;
+  m.lock=false;
+  if(S.tab==='games'&&G.game==='memory'&&G.mem===m)renderView();
+  if(m.mode==='bot'&&m.turn===1&&!m.won)robotPlay(m);
+}
+function memFlipCard(m,i){
+  var c=m.cards[i];c.up=true;memSee(m,i);
   if(m.first<0){m.first=i;renderView();return}
   var j=m.first,a=m.cards[j];m.first=-1;m.moves++;
-  if(a.e===c.e){a.ok=true;c.ok=true;chime();
-    if(m.cards.every(function(x){return x.ok})){m.won=true;S.stats.mem++;addStar(3)}
-    renderView()}
-  else{m.lock=true;thud();renderView();
-    setTimeout(function(){if(G.mem!==m)return;a.up=false;c.up=false;m.lock=false;if(S.tab==='games'&&G.game==='memory')renderView()},800)}
+  if(a.e===c.e){
+    a.ok=c.ok=true;m.score[m.turn]++;chime();delete m.known[i];delete m.known[j];
+    if(m.cards.every(function(x){return x.ok}))memFinish(m);
+    m.lock=true;renderView();setTimeout(function(){if(G.mem===m)memTurnEnd(m,true)},m.won?0:350);
+  }else{
+    m.lock=true;thud();renderView();
+    setTimeout(function(){if(G.mem!==m)return;a.up=false;c.up=false;memTurnEnd(m,false)},900);
+  }
+}
+function memFlip(i){
+  var m=G.mem;if(!m||m.lock||m.won||(m.mode==='bot'&&m.turn===1))return;
+  var c=m.cards[i];if(c.up||c.ok)return;memFlipCard(m,i);
+}
+function robotPlay(m){
+  m.lock=true;
+  setTimeout(function(){
+    if(G.mem!==m||m.won)return;
+    var free=[],by={},pair=null;
+    m.cards.forEach(function(c,i){if(!c.ok&&!c.up)free.push(i)});
+    Object.keys(m.known).forEach(function(k){var i=+k,c=m.cards[i];if(c&&!c.ok&&!c.up){(by[c.e]=by[c.e]||[]).push(i)}});
+    Object.keys(by).forEach(function(e){if(!pair&&by[e].length>=2)pair=by[e]});
+    var first=pair?pair[0]:pick(free.filter(function(i){return !m.known[i]}).concat(free.filter(function(i){return !m.known[i]}).length?[]:free));
+    if(first===undefined)first=pick(free);
+    memFlipCard(m,first);
+    setTimeout(function(){
+      if(G.mem!==m||m.won)return;
+      var f=m.cards[first],second=-1;
+      if(pair)second=pair[1];
+      else{var kn=Object.keys(m.known).map(Number).filter(function(i){return i!==first&&!m.cards[i].ok&&!m.cards[i].up&&m.cards[i].e===f.e});if(kn.length)second=kn[0]}
+      if(second<0){var rest=[];m.cards.forEach(function(c,i){if(i!==first&&!c.ok&&!c.up)rest.push(i)});
+        var unk=rest.filter(function(i){return !m.known[i]});second=pick(unk.length?unk:rest)}
+      memFlipCard(m,second);
+    },850);
+  },750);
+}
+function memSetup(){
+  var g=gt(),c=MEMCFG;
+  var modes=[['solo',g.mSolo],['duo',g.mDuo],['bot',g.mBot]].map(function(x){return '<button data-act="gmcfg" data-k="mode" data-v="'+x[0]+'" aria-pressed="'+(c.mode===x[0])+'">'+esc(x[1])+'</button>'}).join('');
+  var sizes=[12,16,32].map(function(n){return '<button data-act="gmcfg" data-k="size" data-v="'+n+'" aria-pressed="'+(c.size===n)+'" style="direction:ltr">'+n+'</button>'}).join('');
+  return '<div class="card"><h3 class="panel-h" style="margin:0">'+esc(g.mMode)+'</h3><div class="seg" role="group">'+modes+'</div>'+
+   '<h3 class="panel-h" style="margin:0">'+esc(g.mSize)+'</h3><div class="seg" role="group">'+sizes+'</div>'+
+   '<button class="btn" data-act="gmstart"><span>'+esc(g.start)+'</span></button></div>';
 }
 function viewMem(){
-  if(!G.mem)newMem();
-  var m=G.mem,g=gt();
+  if(!G.mem)return memSetup();
+  var m=G.mem,g=gt(),nm=memNames();
   var cards=m.cards.map(function(c,i){var show=c.up||c.ok;
     return '<button class="mc'+(c.ok?' ok':(show?' up':''))+'" data-act="gcard" data-i="'+i+'" aria-label="'+(show?c.e:'?')+'">'+(show?'<span aria-hidden="true">'+c.e+'</span>':'<span class="back" aria-hidden="true">?</span>')+'</button>'}).join('');
-  var fb=m.won?'<div class="fb good" aria-live="polite">'+esc(g.win)+'<button class="btn" data-act="gagain"><span>'+esc(g.again)+'</span></button></div>':'<div class="fb"></div>';
-  return '<div class="card"><p class="hint" style="margin:0">'+esc(g.moves)+': '+m.moves+'</p><div class="mem">'+cards+'</div>'+fb+'</div>';
+  var info;
+  if(m.mode==='solo')info='<div class="scorebar"><span>'+esc(g.moves)+': <b>'+m.moves+'</b></span></div>';
+  else info='<div class="scorebar">'+[0,1].map(function(k){return '<span class="'+(m.turn===k&&!m.won?'act':'')+'">'+esc(nm[k])+': <b>'+m.score[k]+'</b></span>'}).join('')+'</div>'+
+    (m.won?'':'<p class="hint" style="margin:0" aria-live="polite">'+esc(g.turnOf)+esc(nm[m.turn])+'</p>');
+  var fb='<div class="fb"></div>';
+  if(m.won){
+    var msg=m.mode==='solo'?g.win:(m.score[0]===m.score[1]?g.draw:(m.mode==='bot'?(m.score[0]>m.score[1]?g.youWin:g.botWins):g.winnerIs+nm[m.score[0]>m.score[1]?0:1]));
+    fb='<div class="fb good" aria-live="polite">'+esc(msg)+'<button class="btn" data-act="gagain"><span>'+esc(g.again)+'</span></button></div>';
+  }
+  return '<div class="card">'+info+'<div class="mem s'+m.size+'">'+cards+'</div>'+fb+'<button class="btn ghost" data-act="gmemcfg"><span>'+esc(g.settings)+'</span></button></div>';
 }
 
 /* scrambled letters */
@@ -1120,7 +1209,7 @@ en:{title:'My progress',stars:'stars',days:'day streak',letters:'letters learned
   soundOn:'Sound on',soundOff:'Sound off',reset:'Reset progress',confirm:'Tap again to confirm',install:'Install app',
   about:'Works offline, collects no data and shows no ads. Progress stays on this device.',newBadge:'New badge: ',version:'Version',voice:'Voice settings',voiceHint:'For the best pronunciation, install “Speech Services by Google” and download the voice for the language.'}
 };
-var APP_VERSION='1.0.4';
+var APP_VERSION='1.0.5';
 var BADGES=[
  {id:'star1',g:'★',n:{ar:'نجمتي الأولى',fr:'Ma première étoile',en:'My first star'},ok:function(){return S.stars>=1}},
  {id:'star25',g:'★',n:{ar:'٢٥ نجمة',fr:'25 étoiles',en:'25 stars'},ok:function(){return S.stars>=25}},
@@ -1253,6 +1342,9 @@ document.addEventListener('click',function(e){
     case 'gmhear':if(G.q)speak(mcPool(G.q.kind)[G.q.i][0]);break;
     case 'gcard':memFlip(parseInt(b.dataset.i,10));break;
     case 'gagain':newMem();renderView();break;
+    case 'gmcfg':MEMCFG[b.dataset.k]=b.dataset.k==='size'?parseInt(v,10):v;renderView();break;
+    case 'gmstart':newMem();renderView();break;
+    case 'gmemcfg':G.mem=null;renderView();break;
     case 'scpick':scPick(parseInt(b.dataset.k,10));break;
     case 'scundo':if(G.sc&&!G.sc.done&&!G.sc.wrong){G.sc.placed.pop();renderView()}break;
     case 'scclear':if(G.sc&&!G.sc.done&&!G.sc.wrong){G.sc.placed=[];renderView()}break;
