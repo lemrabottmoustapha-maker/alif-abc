@@ -135,6 +135,42 @@ public class MainActivity extends Activity {
             });
         }
 
+
+        private static final String REL = "https://github.com/lemrabottmoustapha-maker/alif-abc/releases/download/latest/";
+
+        /** Looks for a newer release (version.json) and tells the page; silent when offline. */
+        @JavascriptInterface
+        public void checkUpdate() {
+            new Thread(() -> {
+                try {
+                    java.net.HttpURLConnection c = (java.net.HttpURLConnection) new java.net.URL(REL + "version.json").openConnection();
+                    c.setConnectTimeout(8000);
+                    c.setReadTimeout(8000);
+                    if (c.getResponseCode() != 200) return;
+                    java.io.ByteArrayOutputStream bo = new java.io.ByteArrayOutputStream();
+                    try (java.io.InputStream in = c.getInputStream()) {
+                        byte[] b = new byte[4096];
+                        int n;
+                        while ((n = in.read(b)) > 0 && bo.size() < 20000) bo.write(b, 0, n);
+                    }
+                    org.json.JSONObject o = new org.json.JSONObject(bo.toString("UTF-8"));
+                    long cur = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+                    if (o.getLong("versionCode") <= cur) return;
+                    String arg = new org.json.JSONObject().put("name", o.optString("versionName")).put("url", REL + "alif-abc.apk").toString();
+                    runOnUiThread(() -> webView.evaluateJavascript("window.__update&&window.__update(" + arg + ")", null));
+                } catch (Exception ignored) { }
+            }).start();
+        }
+
+        /** Opens the APK download in the browser; only our own release address is allowed. */
+        @JavascriptInterface
+        public void openUrl(String url) {
+            if (url == null || !url.startsWith(REL)) return;
+            runOnUiThread(() -> {
+                try { startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(url))); } catch (Exception ignored) { }
+            });
+        }
+
         @JavascriptInterface
         public void stop() {
             synchronized (MainActivity.this) {
