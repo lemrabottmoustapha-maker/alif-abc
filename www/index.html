@@ -226,6 +226,12 @@ h2{font:800 1.35rem/1.2 var(--display);margin:0;text-wrap:balance}
 .opt.qf{font-family:"Amiri Quran","Amiri","Cairo",serif;font-size:1.6rem;line-height:1.8}
 
 
+/* islamic groups, long hadith */
+.lessons .grp{grid-column:1/-1;margin:10px 0 0;font:800 1.15rem/1.8 var(--display);color:var(--tc)}
+.lessons .grp small{color:var(--muted);font-weight:700;font-size:.9rem}
+.htext.long{font-size:1.5rem;line-height:2.2}.htext.xl{font-size:1.3rem;line-height:2.2}
+.hprefix{overflow-wrap:anywhere}
+
 /* games */
 .ghub{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
 .gt{border:0;border-radius:22px;background:var(--tb);color:var(--tc);padding:14px;min-height:150px;text-align:start;display:flex;flex-direction:column;justify-content:space-between;gap:8px;
@@ -329,6 +335,7 @@ button.chip{cursor:pointer;color:inherit}
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </div>
 
+<script src="islam-data.js"></script>
 <script>
 (function(){
 'use strict';
@@ -712,22 +719,8 @@ function mathPick(v){
 }
 
 /* ---------- islamic lessons (Arabic only) ---------- */
-var QURAN=[
- {id:'q-fatiha',title:'سُورَةُ الْفَاتِحَةِ',gist:'نَحْمَدُ اللَّهَ رَبَّ الْعَالَمِينَ، وَنَعْبُدُهُ وَحْدَهُ وَنَسْتَعِينُ بِهِ، وَنَطْلُبُ مِنْهُ أَنْ يَهْدِيَنَا إِلَى الطَّرِيقِ الْمُسْتَقِيمِ.',
-  ayat:['بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ','الْحَمْدُ لِلَّهِ رَبِّ الْعَالَمِينَ','الرَّحْمَٰنِ الرَّحِيمِ','مَالِكِ يَوْمِ الدِّينِ','إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ','اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ','صِرَاطَ الَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ الْمَغْضُوبِ عَلَيْهِمْ وَلَا الضَّالِّينَ']},
- {id:'q-ikhlas',title:'سُورَةُ الْإِخْلَاصِ',gist:'اللَّهُ وَاحِدٌ لَا شَرِيكَ لَهُ، يَحْتَاجُ إِلَيْهِ كُلُّ الْخَلْقِ وَهُوَ لَا يَحْتَاجُ إِلَى أَحَدٍ، لَيْسَ لَهُ وَالِدٌ وَلَا وَلَدٌ وَلَا يُشْبِهُهُ شَيْءٌ.',
-  ayat:['قُلْ هُوَ اللَّهُ أَحَدٌ','اللَّهُ الصَّمَدُ','لَمْ يَلِدْ وَلَمْ يُولَدْ','وَلَمْ يَكُن لَّهُ كُفُوًا أَحَدٌ']},
- {id:'q-falaq',title:'سُورَةُ الْفَلَقِ',gist:'نَلْجَأُ إِلَى اللَّهِ وَحْدَهُ لِيَحْفَظَنَا مِنْ كُلِّ شَرٍّ.',
-  ayat:['قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ','مِن شَرِّ مَا خَلَقَ','وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ','وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ','وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ']},
- {id:'q-nas',title:'سُورَةُ النَّاسِ',gist:'نَلْجَأُ إِلَى اللَّهِ رَبِّ النَّاسِ وَمَلِكِهِمْ وَإِلَهِهِمْ لِيَحْمِيَنَا مِنْ وَسْوَسَةِ الشَّيْطَانِ.',
-  ayat:['قُلْ أَعُوذُ بِرَبِّ النَّاسِ','مَلِكِ النَّاسِ','إِلَٰهِ النَّاسِ','مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ','الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ','مِنَ الْجِنَّةِ وَالنَّاسِ']},
- {id:'q-kawthar',title:'سُورَةُ الْكَوْثَرِ',gist:'أَعْطَى اللَّهُ نَبِيَّهُ ﷺ خَيْرًا كَثِيرًا، فَعَلَيْنَا أَنْ نَشْكُرَ اللَّهَ بِالصَّلَاةِ لَهُ.',
-  ayat:['إِنَّا أَعْطَيْنَاكَ الْكَوْثَرَ','فَصَلِّ لِرَبِّكَ وَانْحَرْ','إِنَّ شَانِئَكَ هُوَ الْأَبْتَرُ']},
- {id:'q-asr',title:'سُورَةُ الْعَصْرِ',gist:'الْإِنْسَانُ فِي خَسَارَةٍ إِلَّا مَنْ آمَنَ وَعَمِلَ الصَّالِحَاتِ وَأَوْصَى غَيْرَهُ بِالْحَقِّ وَبِالصَّبْرِ.',
-  ayat:['وَالْعَصْرِ','إِنَّ الْإِنسَانَ لَفِي خُسْرٍ','إِلَّا الَّذِينَ آمَنُوا وَعَمِلُوا الصَّالِحَاتِ وَتَوَاصَوْا بِالْحَقِّ وَتَوَاصَوْا بِالصَّبْرِ']},
- {id:'q-nasr',title:'سُورَةُ النَّصْرِ',gist:'إِذَا جَاءَ نَصْرُ اللَّهِ وَالْفَتْحُ فَنُسَبِّحُ اللَّهَ وَنَحْمَدُهُ وَنَسْتَغْفِرُهُ، فَهُوَ كَثِيرُ التَّوْبَةِ عَلَى عِبَادِهِ.',
-  ayat:['إِذَا جَاءَ نَصْرُ اللَّهِ وَالْفَتْحُ','وَرَأَيْتَ النَّاسَ يَدْخُلُونَ فِي دِينِ اللَّهِ أَفْوَاجًا','فَسَبِّحْ بِحَمْدِ رَبِّكَ وَاسْتَغْفِرْهُ إِنَّهُ كَانَ تَوَّابًا']}
-];
+var ISL=window.ISLAM||{quran:[],nawawi:[],seerah:[]};
+var QURAN=ISL.quran;
 var HADITH=[
  {id:'h-niyyah',title:'النِّيَّةُ',short:'الْإِخْلَاصُ فِي النِّيَّةِ',text:'إِنَّمَا الْأَعْمَالُ بِالنِّيَّاتِ، وَإِنَّمَا لِكُلِّ امْرِئٍ مَا نَوَى',narr:'عُمَرُ بْنُ الْخَطَّابِ رَضِيَ اللَّهُ عَنْهُ',src:'مُتَّفَقٌ عَلَيْهِ',
   gist:'ثَوَابُ أَعْمَالِنَا يَكُونُ عَلَى حَسَبِ نِيَّتِنَا، فَنَنْوِي بِكُلِّ عَمَلٍ صَالِحٍ وَجْهَ اللَّهِ تَعَالَى.'},
@@ -748,6 +741,8 @@ var HADITH=[
  {id:'h-rahma',title:'الرَّحْمَةُ',short:'نَرْحَمُ الْخَلْقَ',text:'ارْحَمُوا مَنْ فِي الْأَرْضِ يَرْحَمْكُمْ مَنْ فِي السَّمَاءِ',narr:'عَبْدُ اللَّهِ بْنُ عَمْرٍو رَضِيَ اللَّهُ عَنْهُمَا',src:'رَوَاهُ أَبُو دَاوُدَ وَالتِّرْمِذِيُّ',
   gist:'مَنْ يَرْحَمِ النَّاسَ وَالْحَيَوَانَاتِ يَرْحَمْهُ اللَّهُ.'}
 ];
+HADITH.forEach(function(h){h.grp='أَحَادِيثُ قَصِيرَةٌ'});
+HADITH=HADITH.concat(ISL.nawawi);
 var SEERAH=[
  {id:'s-mawlid',title:'مَوْلِدُ النَّبِيِّ ﷺ',sub:'وِلَادَتُهُ وَنَشْأَتُهُ',
   paras:['وُلِدَ نَبِيُّنَا مُحَمَّدٌ ﷺ فِي مَكَّةَ الْمُكَرَّمَةِ فِي عَامِ الْفِيلِ، مِنْ قَبِيلَةِ قُرَيْشٍ.','اسْمُ أَبِيهِ عَبْدُ اللَّهِ، وَاسْمُ أُمِّهِ آمِنَةُ بِنْتُ وَهْبٍ. وَالْأَشْهَرُ أَنَّ أَبَاهُ تُوُفِّيَ قَبْلَ وِلَادَتِهِ، فَنَشَأَ يَتِيمًا.','أَرْضَعَتْهُ حَلِيمَةُ السَّعْدِيَّةُ فِي الْبَادِيَةِ، ثُمَّ عَادَ إِلَى أُمِّهِ. وَعِنْدَمَا بَلَغَ السَّادِسَةَ مِنْ عُمُرِهِ تُوُفِّيَتْ أُمُّهُ.','كَفَلَهُ جَدُّهُ عَبْدُ الْمُطَّلِبِ، ثُمَّ تُوُفِّيَ جَدُّهُ وَهُوَ فِي الثَّامِنَةِ مِنْ عُمُرِهِ، فَكَفَلَهُ عَمُّهُ أَبُو طَالِبٍ، وَكَانَ يُحِبُّهُ وَيَحْمِيهِ.'],
@@ -768,6 +763,8 @@ var SEERAH=[
   paras:['كَانَ النَّبِيُّ ﷺ رَحِيمًا بِالصِّغَارِ وَالْكِبَارِ، يُحِبُّ الْأَطْفَالَ وَيُسَلِّمُ عَلَيْهِمْ.','كَانَ صَادِقًا لَا يَكْذِبُ، وَكَانَ يَعْفُو عَمَّنْ أَخْطَأَ فِي حَقِّهِ، وَكَرِيمًا لَا يَرُدُّ مَنْ سَأَلَهُ.','وَقَدْ قَالَ اللَّهُ تَعَالَى عَنْهُ: وَإِنَّكَ لَعَلَىٰ خُلُقٍ عَظِيمٍ.','فَعَلَيْنَا أَنْ نَقْتَدِيَ بِهِ فِي أَخْلَاقِنَا: نَصْدُقَ، وَنَرْحَمَ، وَنَعْفُوَ، وَنَتَعَاوَنَ.'],
   qs:[['أَيُّ هَذِهِ الصِّفَاتِ كَانَ النَّبِيُّ ﷺ يَتَّصِفُ بِهَا؟','الرَّحْمَةُ وَالصِّدْقُ وَالْكَرَمُ','الْغَضَبُ وَالْكَذِبُ وَالْبُخْلُ','الْكِبْرُ وَالْقَسْوَةُ وَالْحَسَدُ'],['مَاذَا نَفْعَلُ لِنَقْتَدِيَ بِالنَّبِيِّ ﷺ؟','نَصْدُقُ وَنَرْحَمُ وَنَعْفُو','نَكْذِبُ وَنَغْضَبُ','نَبْخَلُ وَنَتَكَبَّرُ']]}
 ];
+SEERAH.forEach(function(l){l.grp='حَيَاتُهُ ﷺ'});
+SEERAH=SEERAH.concat(ISL.seerah);
 var SEC={quran:{label:'الْقُرْآنُ الْكَرِيمُ',list:QURAN,c:'c2',base:2},hadith:{label:'الْحَدِيثُ الشَّرِيفُ',list:HADITH,c:'c3',base:3},seerah:{label:'السِّيرَةُ النَّبَوِيَّةُ',list:SEERAH,c:'c0',base:0}};
 var I={sec:'quran',open:null,mode:'read',quiz:null,reveal:[]};
 var PRAISE=['أَحْسَنْتَ!','رَائِعٌ!','مُمْتَازٌ!','بَارَكَ اللَّهُ فِيكَ!','بَرَافُو!'];
@@ -776,10 +773,12 @@ function ad(n){return String(n).replace(/\d/g,function(d){return '٠١٢٣٤٥٦
 function strip(s){return s.replace(/[ـً-ٰٟۖ-ۭ]/g,'')}
 var POOL=[];
 (function(){function lw(t){var w=t.trim().split(/\s+/);return w[w.length-1]}
-  QURAN.forEach(function(s){s.ayat.forEach(function(a){POOL.push(lw(a))})});HADITH.forEach(function(h){POOL.push(lw(h.text))})})();
-function blankQ(text){
+  QURAN.forEach(function(s){s.ayat.forEach(function(a){POOL.push(lw(a))})});HADITH.forEach(function(h){POOL.push(lw(h.text.replace(/[.،»]+$/,'')))})})();
+function blankQ(text,clause){
+  if(clause){var cl=text.split(/[،.؛:؟!«»]/).map(function(x){return x.trim()}).filter(function(x){return x.split(/\s+/).length>=3});if(cl.length)text=pick(cl)}
   var w=text.trim().split(/\s+/);if(w.length<2)return null;
   var ans=w.pop(),key=strip(ans),d=[],tries=0;
+  if(w.length>8)w=['…'].concat(w.slice(-8));
   while(d.length<2&&tries++<300){var c=pick(POOL),k=strip(c);if(k!==key&&d.every(function(x){return strip(x)!==k}))d.push(c)}
   return {kind:'blank',before:w.join(' '),ans:ans,opts:shuffle([ans].concat(d))};
 }
@@ -792,7 +791,7 @@ function buildQuiz(l){
     var n=l.ayat.length,c=shuffle([n-2,n-1,n+1,n+2].filter(function(x){return x>=2})).slice(0,2);
     qs.push(mcQ('كَمْ عَدَدُ آيَاتِ '+l.title.replace('سُورَةُ','سُورَةِ')+'؟',ad(n),c.map(ad)));
   }else if(I.sec==='hadith'){
-    var b=blankQ(l.text);if(b)qs.push(b);
+    var b=blankQ(l.text,l.text.length>120);if(b)qs.push(b);
     qs.push(mcQ('مَنْ رَاوِي هَذَا الْحَدِيثِ؟',l.narr,others(HADITH,function(h){return h.narr},l.narr,2)));
     qs.push(mcQ('مَاذَا يُعَلِّمُنَا هَذَا الْحَدِيثُ؟',l.short,others(HADITH,function(h){return h.short},l.short,2)));
   }else{
@@ -802,11 +801,15 @@ function buildQuiz(l){
 }
 function gist(tx){return '<div class="gist"><h3>مَاذَا نَتَعَلَّمُ؟</h3>'+esc(tx)+'</div>'}
 function islamList(){
-  var sec=SEC[I.sec],nd=sec.list.filter(function(l){return S.islam.indexOf(l.id)>=0}).length;
-  return '<h2>'+sec.label+'</h2><p class="hint">'+(nd?'الدُّرُوسُ الْمُنْجَزَةُ: '+ad(nd)+' من '+ad(sec.list.length):'اِخْتَرْ دَرْسًا لِتَبْدَأَ')+'</p>'+
-   '<div class="lessons">'+sec.list.map(function(l,i){
-     var sub=I.sec==='quran'?ad(l.ayat.length)+' آيَاتٍ':(I.sec==='hadith'?l.short:l.sub);
-     return '<button class="lesson c'+((sec.base+i)%4)+'" data-act="iopen" data-i="'+i+'">'+(S.islam.indexOf(l.id)>=0?'<span class="dn">'+CHK+'</span>':'')+'<b>'+esc(l.title)+'</b><small>'+esc(sub)+'</small></button>'}).join('')+'</div>';
+  var sec=SEC[I.sec],nd=sec.list.filter(function(l){return S.islam.indexOf(l.id)>=0}).length,grp=null;
+  var items=sec.list.map(function(l,i){
+    var h='';
+    if(l.grp&&l.grp!==grp){grp=l.grp;
+      var g=sec.list.filter(function(x){return x.grp===grp}),gd=g.filter(function(x){return S.islam.indexOf(x.id)>=0}).length;
+      h='<h3 class="grp">'+esc(grp)+' <small>'+ad(gd)+' / '+ad(g.length)+'</small></h3>'}
+    var sub=I.sec==='quran'?ad(l.ayat.length)+' آيَاتٍ':(I.sec==='hadith'?(l.n?'الْحَدِيثُ '+ad(l.n):l.short):l.sub);
+    return h+'<button class="lesson c'+((sec.base+i)%4)+'" data-act="iopen" data-i="'+i+'">'+(S.islam.indexOf(l.id)>=0?'<span class="dn">'+CHK+'</span>':'')+'<b>'+esc(l.title)+'</b><small>'+esc(sub)+'</small></button>'}).join('');
+  return '<h2>'+sec.label+'</h2><p class="hint">'+(nd?'الدُّرُوسُ الْمُنْجَزَةُ: '+ad(nd)+' من '+ad(sec.list.length):'اِخْتَرْ دَرْسًا لِتَبْدَأَ')+'</p><div class="lessons">'+items+'</div>';
 }
 function quranBody(l){
   var hide=I.mode==='hide';
@@ -820,7 +823,8 @@ function quranBody(l){
   return '<div class="reader">'+bar+bsm+ay+'</div>'+gist(l.gist);
 }
 function hadithBody(l){
-  return '<div class="reader"><p class="hprefix">قَالَ رَسُولُ اللَّهِ ﷺ:</p><p class="htext">'+esc(l.text)+'</p><div class="meta"><span>الرَّاوِي: '+esc(l.narr)+'</span><span>'+esc(l.src)+'</span></div></div>'+gist(l.gist);
+  var cls=l.text.length>700?' xl':(l.text.length>260?' long':'');
+  return '<div class="reader"><p class="hprefix">'+esc(l.intro||'قَالَ رَسُولُ اللَّهِ ﷺ:')+'</p><p class="htext'+cls+'">'+esc(l.text)+'</p>'+(l.extra?'<p class="hprefix">'+esc(l.extra)+'</p>':'')+'<div class="meta"><span>الرَّاوِي: '+esc(l.narr)+'</span><span>'+esc(l.src)+'</span></div></div>'+gist(l.gist);
 }
 function seerahBody(l){
   return '<div class="reader">'+l.paras.map(function(p){return '<p class="para">'+esc(p)+'</p>'}).join('')+'</div>';
@@ -1201,7 +1205,7 @@ function renderAll(){renderChrome();renderView()}
 var PT={
 ar:{title:'إنجازاتي',stars:'نجوم',days:'أيام متتالية',letters:'حروف تعلمتها',badges:'الشارات',settings:'الإعدادات',close:'إغلاق',
   soundOn:'الصوت مفعّل',soundOff:'الصوت متوقف',reset:'مسح التقدم',confirm:'اضغط مرة أخرى للتأكيد',install:'تثبيت التطبيق',
-  about:'يعمل بدون إنترنت، ولا يجمع أي بيانات ولا يعرض إعلانات. يبقى تقدّم الطفل على هذا الجهاز فقط.',newBadge:'شارة جديدة: ',version:'الإصدار',voice:'إعدادات صوت النطق',voiceHint:'لأفضل نطق للعربية: ثبّت «خدمات الكلام من Google» ونزّل صوت اللغة العربية من إعدادات تحويل النص إلى كلام.'},
+  about:'يعمل بدون إنترنت، ولا يجمع أي بيانات ولا يعرض إعلانات. يبقى تقدّم الطفل على هذا الجهاز فقط. نص القرآن الكريم: مشروع Tanzil (tanzil.net) دون تعديل.',newBadge:'شارة جديدة: ',version:'الإصدار',voice:'إعدادات صوت النطق',voiceHint:'لأفضل نطق للعربية: ثبّت «خدمات الكلام من Google» ونزّل صوت اللغة العربية من إعدادات تحويل النص إلى كلام.'},
 fr:{title:'Mes réussites',stars:'étoiles',days:'jours de suite',letters:'lettres apprises',badges:'Badges',settings:'Réglages',close:'Fermer',
   soundOn:'Son activé',soundOff:'Son coupé',reset:'Effacer la progression',confirm:'Appuie encore pour confirmer',install:'Installer l’application',
   about:'Fonctionne sans internet, ne collecte aucune donnée et n’affiche aucune publicité. La progression reste sur cet appareil.',newBadge:'Nouveau badge : ',version:'Version',voice:'Réglages de la voix',voiceHint:'Pour une meilleure prononciation, installe « Services vocaux Google » et télécharge la voix de la langue.'},
@@ -1209,7 +1213,7 @@ en:{title:'My progress',stars:'stars',days:'day streak',letters:'letters learned
   soundOn:'Sound on',soundOff:'Sound off',reset:'Reset progress',confirm:'Tap again to confirm',install:'Install app',
   about:'Works offline, collects no data and shows no ads. Progress stays on this device.',newBadge:'New badge: ',version:'Version',voice:'Voice settings',voiceHint:'For the best pronunciation, install “Speech Services by Google” and download the voice for the language.'}
 };
-var APP_VERSION='1.0.5';
+var APP_VERSION='1.1.0';
 var BADGES=[
  {id:'star1',g:'★',n:{ar:'نجمتي الأولى',fr:'Ma première étoile',en:'My first star'},ok:function(){return S.stars>=1}},
  {id:'star25',g:'★',n:{ar:'٢٥ نجمة',fr:'25 étoiles',en:'25 stars'},ok:function(){return S.stars>=25}},

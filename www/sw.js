@@ -1,7 +1,7 @@
 /* Offline cache for the PWA build. Bump CACHE when any file changes so installed copies update. */
-const CACHE = 'alif-abc-v1.0.0';
+const CACHE = 'alif-abc-v1.1.0';
 const FILES = [
-  './', './index.html', './manifest.webmanifest',
+  './', './index.html', './manifest.webmanifest', './islam-data.js',
   './fonts/fonts.css', './fonts/Baloo2.woff', './fonts/BalooBhaijaan2.woff', './fonts/Nunito.woff', './fonts/Cairo.woff',
   './fonts/Amiri-Regular.woff', './fonts/Amiri-Bold.woff', './fonts/AmiriQuran.woff',
   './icons/icon-192.png', './icons/icon-512.png', './icons/maskable-192.png', './icons/maskable-512.png',
