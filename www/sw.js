@@ -1,5 +1,5 @@
 /* Offline cache for the PWA build. Bump CACHE when any file changes so installed copies update. */
-const CACHE = 'alif-abc-v1.1.3';
+const CACHE = 'alif-abc-v1.1.4';
 const FILES = [
   './', './index.html', './manifest.webmanifest', './islam-data.js',
   './fonts/fonts.css', './fonts/Baloo2.woff', './fonts/BalooBhaijaan2.woff', './fonts/Nunito.woff', './fonts/Cairo.woff',
