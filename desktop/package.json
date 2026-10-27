@@ -2,7 +2,7 @@
   "name": "alif-abc",
   "productName": "Alif ABC",
   "version": "1.0.0",
-  "description": "ألف ABC: تعليم الحروف والقراءة والكتابة والحساب للأطفال بالعربية والفرنسية والإنجليزية",
+  "description": "الگراي: تعليم الحروف والقراءة والكتابة والحساب للأطفال بالعربية والفرنسية والإنجليزية",
   "main": "main.js",
   "private": true,
   "author": "Alif ABC",

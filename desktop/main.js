@@ -12,7 +12,7 @@ function createWindow() {
     minWidth: 360,
     minHeight: 560,
     show: false,
-    title: 'ألف ABC',
+    title: 'الگراي',
     backgroundColor: '#EAF3FF',
     icon: path.join(__dirname, 'icon.png'),
     autoHideMenuBar: true,
